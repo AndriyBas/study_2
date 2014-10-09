@@ -5,7 +5,7 @@ package relevance;
  */
 public class ConstRelevance implements Relevance {
     @Override
-    public double isRelevant(double t) {
+    public double getRelevance(double t) {
         return 1.0;
     }
 }

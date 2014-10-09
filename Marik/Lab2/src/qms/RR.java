@@ -48,8 +48,7 @@ public class RR extends AbstractQMS {
                     eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
                 }
 
-
-                processEvent(e, newTime);
+                finishEvent(e, newTime);
                 eventQueue.removeFirst();
 
                 time = newTime;
@@ -59,33 +58,18 @@ public class RR extends AbstractQMS {
                 while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
                     eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
                 }
-
-
             }
         }
-
-
-        averageInSystemTime = totalInSystemTime / totalTasks;
-        averageReactTime = totalReactTime / totalTasks;
-        deviationInSystem = 0;
-        for (int i = 0; i < tInSystem.size(); i++) {
-            deviationInSystem += (averageInSystemTime - tInSystem.get(i)) * (averageInSystemTime - tInSystem.get(i));
-        }
-        deviationInSystem /= totalTasks;
     }
 
 
-    void processEvent(Event e, double time) {
+    void finishEvent(Event e, double time) {
         completedTasks++;
         totalInSystemTime += (time - e.bornTime);
-        totalReactTime += (time - e.serveTime - e.bornTime);
 
-        tInSystem.add(time - e.bornTime);
-        tReactTime.add(time - e.serveTime - e.bornTime);
-        tServeTime.add(e.serveTime);
+        //totalReactTime += (time - e.serveTime - e.bornTime);
+
     }
 
-
-}
 
 }

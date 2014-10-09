@@ -13,11 +13,11 @@ public class MainLab2 {
 
     public static void main(String[] args) {
 
-        Generator inGen = new ExponentialGen(0.7);
+        Generator inGen = new ExponentialGen(1.5);
 
 //        Generator serveGen = new HyperExponentialGen(new double[] {0.3, 0.7}, new double[] {7, 0.4});
 //        Generator serveGen = new Regular(1.2);
-        Generator serveGen = new ExponentialGen(0.2);
+        Generator serveGen = new ExponentialGen(1.0);
 
         Relevance relevance = new ConstRelevance();
 

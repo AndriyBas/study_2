@@ -4,7 +4,6 @@ import event.Event;
 import generators.Generator;
 import relevance.Relevance;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -21,40 +20,70 @@ public abstract class AbstractQMS {
 
     final double[] k;
 
-    int totalTasks = 5000;
+    final int N = 5;
     int completedTasks = 0;
     int generatedTasks = 0;
 
-    double totalReactTime = 0.0;
-    double totalInSystemTime = 0.0;
 
-    ArrayList<Double> tInSystem;
-    ArrayList<Double> tReactTime;
-    ArrayList<Double> tServeTime;
+    final ArrayList<Event> inEvents;
+
+    double totalReactTime;
+    double totalInSystemTime;
+    double totalServeTime;
+    double totalWaitTime;
 
     double deviationInSystem;
+
+    double averageServeTime;
     double averageInSystemTime;
     double averageReactTime;
+    double averageWaitTime;
 
     public AbstractQMS(Generator inputGen, Generator serveGen, Relevance relevance, double[] k) {
         this.inputGen = inputGen;
         this.serveGen = serveGen;
         this.relevance = relevance;
         this.k = k;
-
-        tInSystem = new ArrayList<>(totalTasks);
-        tReactTime = new ArrayList<>(totalTasks);
+        this.inEvents = new ArrayList<>(N);
     }
 
     public abstract void run();
 
     public Event generateEvent(double fromTime) {
         generatedTasks++;
-        return new Event(fromTime + inputGen.generate(), serveGen.generate());
+        Event e = new Event(fromTime + inputGen.generate(), serveGen.generate());
+        inEvents.add(e);
+        return e;
     }
 
     public boolean hasMoreTasks() {
-        return generatedTasks < totalTasks;
+        return generatedTasks < N;
+    }
+
+    public void calculateValues() {
+
+        totalInSystemTime = totalReactTime = totalServeTime = totalWaitTime = 0.0;
+        for (Event e : inEvents) {
+            if (e.isCompleted()) {
+                totalInSystemTime += e.getInSystemTime();
+                totalReactTime += e.getReactTime();
+                totalWaitTime += e.getWaitTime();
+                totalServeTime += e.serveTime;
+            }
+        }
+
+        averageInSystemTime = totalInSystemTime / N;
+        averageReactTime = totalReactTime / N;
+        averageWaitTime = totalWaitTime / N;
+        averageServeTime = totalServeTime / N;
+
+        deviationInSystem = 0;
+
+        for (Event e : inEvents) {
+            deviationInSystem += (averageInSystemTime - e.getInSystemTime()) * (averageInSystemTime - e.getInSystemTime());
+        }
+
+        deviationInSystem /= N;
     }
 
 }

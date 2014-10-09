@@ -35,38 +35,38 @@ public class FIFO extends AbstractQMS {
             }
 
             Event e = eventQueue.getFirst();
+
             if (time < e.bornTime) {
                 time = e.bornTime;
             }
-            double newTime = time + e.serveTime;
 
-            while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
-                eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
+            if (relevance.getRelevance(time - e.bornTime) >= 0.0) {
+
+                double newTime = time + e.serveTime;
+
+                while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
+                    eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
+                }
+
+                processEvent(e, newTime);
+                time = newTime;
             }
 
-            processEvent(e, newTime);
             eventQueue.removeFirst();
-
-            time = newTime;
         }
 
-        averageInSystemTime = totalInSystemTime / totalTasks;
-        averageReactTime = totalReactTime / totalTasks;
-        deviationInSystem = 0;
-        for (int i = 0; i < tInSystem.size(); i++) {
-            deviationInSystem += (averageInSystemTime - tInSystem.get(i)) * (averageInSystemTime - tInSystem.get(i));
-        }
-        deviationInSystem /= totalTasks;
+        calculateValues();
     }
 
     void processEvent(Event e, double time) {
         completedTasks++;
-        totalInSystemTime += (time - e.bornTime);
-        totalReactTime += (time - e.serveTime - e.bornTime);
 
-        tInSystem.add(time - e.bornTime);
-        tReactTime.add(time - e.serveTime - e.bornTime);
-        tServeTime.add(e.serveTime);
+        e.setCompletedTime(time);
+        e.setLastServeTime(time);
+        e.setReactTime(time - e.serveTime - e.bornTime);
+        e.setWaitTime(time - e.serveTime - e.bornTime);
+        e.completeBy(e.serveTime);
+        e.setInSystemTime(time - e.bornTime);
     }
 
 }

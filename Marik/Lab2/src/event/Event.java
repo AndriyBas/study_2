@@ -11,15 +11,24 @@ public class Event {
     private double lastServeTime;
     private double partServedTime;
 
+    private double completedTime;
+
+    private double reactTime;
+
+    private double waitTime;
+    private double inSystemTime;
+
     public Event(double bornTime, double serveTime) {
         this.bornTime = bornTime;
         this.serveTime = serveTime;
         this.partServedTime = 0.0;
         this.lastServeTime = bornTime;
+        completedTime = -1.0;
+        reactTime = -1.0;
     }
 
     public boolean isCompleted() {
-        return Double.compare(partServedTime, serveTime) >= 0;
+        return completedTime > 0.0;
     }
 
     public double getPartServedTime() {
@@ -38,4 +47,35 @@ public class Event {
         this.lastServeTime = lastServeTime;
     }
 
+    public double getCompletedTime() {
+        return completedTime;
+    }
+
+    public void setCompletedTime(double completedTime) {
+        this.completedTime = completedTime;
+    }
+
+    public double getReactTime() {
+        return reactTime;
+    }
+
+    public void setReactTime(double reactTime) {
+        this.reactTime = reactTime;
+    }
+
+    public double getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(double waitTime) {
+        this.waitTime = waitTime;
+    }
+
+    public double getInSystemTime() {
+        return inSystemTime;
+    }
+
+    public void setInSystemTime(double inSystemTime) {
+        this.inSystemTime = inSystemTime;
+    }
 }

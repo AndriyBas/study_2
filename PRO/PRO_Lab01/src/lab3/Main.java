@@ -1,12 +1,12 @@
 package lab3;
 
-/*	Лабораторна робота №2
+/*	Лабораторна робота №3
 --------------------------------
 	Основна програма
 --------------------------------
-	F1: e = (A + B)*(C + D*(MA*MZ))
-	F2: MD = MIN(MA)*MB*MC
-	F3: F = MA*D + MB*C + (MX*ME)*P
+	1.22: F1 : d = (B*C) + (A*B) +(C*(B*(MA*MZ)))
+	2.19: F2 : v = MAX(MA + MB*MC)
+    3.21: F3 : W = SORT(B*MD)*(MA *MB)
 --------------------------------
 	Виконав:
 	Бас Андрій, гр. ІО-22
@@ -16,14 +16,12 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Data.setN(1000);
 
-        Thread f1 = new F1Task();
-        Thread f2 = new Thread(new F2Task());
-        Thread f3 = new Thread(new F3Task());
+        // java -Xss128m Main.java
+        Thread f1 = new Thread(null, new F1Task(), "F1", 100000);
+        Thread f2 = new Thread(null, new F2Task(), "F2", 100000);
+        Thread f3 = new Thread(null, new F3Task(), "F3", 100000);
 
-        f1.setName("F1");
-        f2.setName("F2");
-        f3.setName("F3");
-        f1.setPriority(Thread.NORM_PRIORITY + 3);
+        f1.setPriority(Thread.NORM_PRIORITY);
         f2.setPriority(Thread.MIN_PRIORITY);
         f3.setPriority(10);
 

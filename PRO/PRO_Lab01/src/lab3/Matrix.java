@@ -1,8 +1,5 @@
 package lab3;
 
-/**
- * Created by andriybas on 10/3/14.
- */
 public class Matrix {
 
     private static int N;
@@ -46,27 +43,6 @@ public class Matrix {
         data[row].set(column, value);
     }
 
-    public Matrix mul(int s) {
-        Vector[] result = new Vector[N];
-        for (int i = 0; i < N; i++) {
-            result[i] = data[i].mul(s);
-        }
-        return new Matrix(result);
-    }
-
-    public Vector mul(Vector v) {
-        Vector result = new Vector();
-        int temp;
-        for (int i = 0; i < N; i++) {
-            temp = 0;
-            for (int j = 0; j < N; j++) {
-                temp += data[i].get(j)*v.get(j);
-            }
-            result.set(i, temp);
-        }
-        return result;
-    }
-
     public Matrix mul(Matrix m) {
         Vector[] result = new Vector[N];
         for (int i = 0; i < N; i++) {
@@ -75,27 +51,22 @@ public class Matrix {
         return new Matrix(result);
     }
 
-    public int min() {
-        int min = data[0].min();
+    public Matrix add(Matrix m) {
+        Vector[] result = new Vector[N];
+        for (int i = 0; i < N; i++) {
+            result[i] = data[i].add(m.get(i));
+        }
+        return new Matrix(result);
+    }
+
+    public int max() {
+        int max = data[0].max();
         int temp;
         for (int i = 1; i < N; i++) {
-            temp = data[i].min();
-            if(min > temp)
-                min = temp;
+            temp = data[i].max();
+            if (max < temp)
+                max = temp;
         }
-        return min;
+        return max;
     }
-
-    public String toString() {
-        StringBuilder str = new StringBuilder("{\n");
-        for (int i = 0; i < N; i++) {
-            str.append("\t");
-            str.append(data[i].toString());
-            str.append("\n");
-        }
-        str.append("}");
-        return str.toString();
-    }
-
-
 }

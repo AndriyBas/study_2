@@ -14,7 +14,7 @@ public class DefaultRelevance implements Relevance {
     }
 
     @Override
-    public double isRelevant(double t) {
+    public double getRelevance(double t) {
 
         if (t <= t1) {
             return 1.0;

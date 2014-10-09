@@ -2,12 +2,11 @@ package lab3;
 
 import java.util.Arrays;
 
-/**
- * Created by andriybas on 10/3/14.
- */
 public class Vector {
+
     private static int N;
     private int[] data;
+
     public Vector() {
         data = new int[N];
     }
@@ -22,6 +21,10 @@ public class Vector {
         for (int i = 0; i < N; i++) {
             data[i] = v.data[i];
         }
+    }
+
+    private Vector(int[] data) {
+        this.data = data;
     }
 
     public static int getN() {
@@ -48,14 +51,6 @@ public class Vector {
         return result;
     }
 
-    public Vector mul(int s) {
-        Vector result = new Vector(this);
-        for (int i = 0; i < N; i++) {
-            result.data[i] *= s;
-        }
-        return result;
-    }
-
     public int mul(Vector v) {
         int result = 0;
         for (int i = 0; i < N; i++) {
@@ -70,30 +65,40 @@ public class Vector {
         for (int i = 0; i < N; i++) {
             temp = 0;
             for (int j = 0; j < N; j++) {
-                temp += this.data[j]*m.get(j, i);
+                temp += this.data[j] * m.get(j, i);
             }
             result.set(i, temp);
         }
         return result;
     }
 
-    public int min() {
-        int min = data[0];
+    public int max() {
+        int max = data[0];
         for (int i = 1; i < N; i++) {
-            if(min > data[i])
-                min = data[i];
+            if (max < data[i])
+                max = data[i];
         }
-        return min;
+        return max;
+    }
+
+    public Vector sort() {
+        int[] result = new int[N];
+        System.arraycopy(data, 0, result, 0, N);
+        Arrays.sort(result);
+        return new Vector(result);
     }
 
     public String toString() {
-        StringBuilder str = new StringBuilder("[");
+        StringBuilder str = new StringBuilder();
+
+        str.append('[');
         for (int i = 0; i < N - 1; i++) {
             str.append(data[i]);
-            str.append(",\t");
+            str.append(',');
+            str.append(' ');
         }
-        str.append(data[N-1]);
-        str.append("]");
+        str.append(data[N - 1]);
+        str.append(']');
         return str.toString();
     }
 
