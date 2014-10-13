@@ -15,12 +15,12 @@ public final class DBDriverFactory {
         switch (dbTypes) {
             case MySql:
                 driver = new DBDriverMysql();
-
+                break;
             case Oracle:
                 throw new ClassNotFoundException("Oracle DB is not implemented yet");
-
             default:
                 driver = new DBDriverMysql();
+                break;
         }
         return driver;
     }

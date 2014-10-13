@@ -1,6 +1,12 @@
 package ua.bu.jdbc.connection;
 
+import ua.bu.jdbc.entities.Tags;
+
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -13,9 +19,35 @@ public class Database {
     private final String password;
     private final DBDriver driver;
 
+    private Connection connection;
 
-    private Connection conn;
+    public String getPassword() {
+        return password;
+    }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public DBDriver getDriver() {
+        return driver;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public Connection getDSConnection() throws SQLException {
+        return driver.getConnection();
+    }
+
+    public void loadDataSource() {
+        driver.loadDataSource(url, user, password);
+    }
 
     public Database(String propertiesName, DBDriver driver) {
         ResourceBundle bundle = ResourceBundle.getBundle(propertiesName);
@@ -25,6 +57,10 @@ public class Database {
         this.password = bundle.getString("password");
 
         this.driver = driver;
+    }
+
+    public void connect() throws SQLException {
+        this.connection = getDriver().connect(url, user, password);
     }
 
 }

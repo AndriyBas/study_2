@@ -1,4 +1,4 @@
-package ua.bu.jdbc.dao;
+package ua.bu.jdbc;
 
 import ua.bu.jdbc.Logic;
 
