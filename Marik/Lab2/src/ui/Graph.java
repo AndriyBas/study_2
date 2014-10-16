@@ -46,16 +46,23 @@ public class Graph extends JFrame {
     private JPanel panelGraph2;
     private JPanel panelGraph1;
     private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField textFieldMeow;
+    private JTextField textFieldLambda;
+    private JCheckBox checkBoxTheta;
+    private JTextField textFieldTheta;
+    private JCheckBox checkBoxExpon;
+    private JCheckBox checkBoxBasVar;
+    private JTextField textFieldBasP1;
+    private JTextField textFieldBasM2;
+    private JTextField textFieldBasM1;
 
     public Graph() {
         super("Hello, Marik ))");
 
         add(rootPanel);
 
-        int width = 600;
-        int height = 400;
+        int width = 800;
+        int height = 600;
 
         setMinimumSize(new Dimension(width, height));
 
@@ -84,6 +91,18 @@ public class Graph extends JFrame {
 //        Generator serveGen = new Regular(1.2);
         Generator serveGen = new ExponentialGen(1.2);
 
+        if (checkBoxExpon.isSelected()) {
+            inGen = new ExponentialGen(Double.parseDouble(textFieldLambda.getText().toString().trim()));
+            serveGen = new ExponentialGen(Double.parseDouble(textFieldMeow.getText().toString().trim()));
+        }
+
+        if (checkBoxBasVar.isSelected()) {
+            double p = Double.parseDouble(textFieldBasP1.getText().toString().trim());
+            double m1 = Double.parseDouble(textFieldBasM1.getText().toString().trim());
+            double m2 = Double.parseDouble(textFieldBasM2.getText().toString().trim());
+            serveGen = new HyperExponentialGen(new double[]{p, 1 - p}, new double[]{m1, m2});
+        }
+
         Relevance relevance = new ConstRelevance();
 
         double[] k = new double[]{-5.0, -1.0, -1.0, 0.0, 0.0};
@@ -111,7 +130,13 @@ public class Graph extends JFrame {
             eventsCopy.add(new Event(e.bornTime, e.serveTime));
         }
         RR rr = new RR(eventsCopy, relevance, k);
-        rr.calculateTheta();
+
+        if (checkBoxTheta.isSelected()) {
+            rr.theta = Double.parseDouble(textFieldTheta.getText());
+        } else {
+            rr.calculateTheta();
+        }
+
 
         rr.run();
 
@@ -150,7 +175,7 @@ public class Graph extends JFrame {
 
         double[] res = Regression.getOLSRegression(data1, 0);
         LineFunction2D linefunction2d = new LineFunction2D(res[0], res[1]);
-        XYDataset regressionDataset = DatasetUtilities.sampleFunction2D(linefunction2d, 0.0D, maxX, 100, "FIFO Regression Line");
+        XYDataset regressionDataset = DatasetUtilities.sampleFunction2D(linefunction2d, 0.0D, maxX, 100, "FIFO");
 
         JFreeChart regressionLineChart = ChartFactory.createScatterPlot(
                 "FIFO", "t", "T", regressionDataset,
@@ -163,7 +188,7 @@ public class Graph extends JFrame {
 
 //        xyplot.setRenderer(xylineandshaperenderer1);
 
-        JFreeChart ch = ChartFactory.createXYLineChart("Func", "t", "T", regressionDataset, PlotOrientation.VERTICAL, true, false, false);
+        JFreeChart ch = ChartFactory.createXYLineChart("Regression line", "t", "T", regressionDataset, PlotOrientation.VERTICAL, true, false, false);
         ch.setBackgroundPaint(Color.white);
 
         XYPlot plot2 = ch.getXYPlot();//new XYPlot(regressionDataset, numberaxis, numberaxis1, xylineandshaperenderer1);
@@ -202,7 +227,7 @@ public class Graph extends JFrame {
                 double[] rrRes = Regression.getOLSRegression(rrDat, 0);
 
                 LineFunction2D rrLineFunc = new LineFunction2D(rrRes[0], rrRes[1]);
-                XYDataset rrRegDataSet = DatasetUtilities.sampleFunction2D(rrLineFunc, x, nextX, 100, "");
+                XYDataset rrRegDataSet = DatasetUtilities.sampleFunction2D(rrLineFunc, x, nextX, 100, "RR " + i);
 
                 plot2.setDataset(i, rrRegDataSet);
                 plot2.setRenderer(i, rrLineRen);
@@ -232,7 +257,7 @@ public class Graph extends JFrame {
 
         pack();
 
-        System.out.println("=======================================");
+        System.out.println("=======================================\n");
     }
 
     private void addMenu() {
