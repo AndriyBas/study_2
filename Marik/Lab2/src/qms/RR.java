@@ -1,24 +1,60 @@
 package qms;
 
 import event.Event;
-import generators.Generator;
 import relevance.Relevance;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * Created by andriybas on 10/2/14.
  */
 public class RR extends AbstractQMS {
 
-    LinkedList<Event> eventQueue;
+    ArrayList<Event> eventQueue;
 
-    double theta = 0.1;
+    public double theta = 0.2;
 
-    public RR(Generator inputGen, Generator serveGen, Relevance relevance, double[] k) {
-        super(inputGen, serveGen, relevance, k);
+    public RR(List<Event> inEvents, Relevance relevance, double[] k) {
+        super(inEvents, relevance, k);
+        eventQueue = new ArrayList<>(inEvents);
+        clearData();
 
-        eventQueue = new LinkedList<>();
+//        calculateTheta();
+    }
+
+    public void calculateTheta() {
+        theta = 0.001;
+        double dt = 0.01;
+        double maxTheta = 10.0;
+
+        double bestTheta = theta;
+        double maxFuncVal = Double.MIN_VALUE;
+
+        while (theta < maxTheta) {
+
+            run();
+
+            double funcVal = calculateFunction();
+            if (funcVal > maxFuncVal) {
+                maxFuncVal = funcVal;
+                bestTheta = theta;
+            }
+
+            theta += dt;
+
+            clearData();
+        }
+
+        theta = bestTheta;
+    }
+
+    private void clearData() {
+        for (Event e : eventQueue) {
+            e.clear();
+        }
     }
 
     @Override
@@ -26,49 +62,68 @@ public class RR extends AbstractQMS {
 
         double time = 0;
 
-        while (hasMoreTasks() || !eventQueue.isEmpty()) {
+        while (!eventQueue.isEmpty()) {
 
-            if (eventQueue.isEmpty() && hasMoreTasks()) {
-                eventQueue.add(generateEvent(time));
-            }
+            Event e = eventQueue.get(0);
 
-            if (eventQueue.isEmpty()) {
-                break;
-            }
-
-            Event e = eventQueue.getFirst();
             if (time < e.bornTime) {
                 time = e.bornTime;
             }
 
-            if (e.serveTime - e.getPartServedTime() <= theta) {
-                double newTime = time + e.serveTime;
+            if (relevance.getRelevance(time - e.bornTime) >= 0.0) {
 
-                while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
-                    eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
+//                double newTime = time + e.serveTime;
+
+                double needTime = e.serveTime - e.getPartServedTime();
+                if (needTime <= theta) {
+                    finishEventBy(e, needTime, time);
+                    time += needTime;
+                } else {
+                    processEventBy(e, theta, time);
+                    time += theta;
+
+                    // insert at proper position
+                    int i = 1;
+                    while (i < eventQueue.size() && eventQueue.get(i).getLastServeTime() < time)
+                        i++;
+                    eventQueue.add(i, e);
                 }
 
-                finishEvent(e, newTime);
-                eventQueue.removeFirst();
-
-                time = newTime;
-            } else {
-                double newTime = time + theta;
-
-                while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
-                    eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
-                }
             }
+            eventQueue.remove(0);
         }
+
+        calculateValues();
     }
 
-
-    void finishEvent(Event e, double time) {
+    private void finishEventBy(Event e, double byTime, double fromTime) {
         completedTasks++;
-        totalInSystemTime += (time - e.bornTime);
 
-        //totalReactTime += (time - e.serveTime - e.bornTime);
+        e.setCompletedTime(fromTime + byTime);
 
+        if (e.getReactTime() < 0.0) {
+            e.setReactTime(fromTime - e.bornTime);
+        }
+
+        e.setWaitTime(e.getWaitTime() + fromTime - e.getLastServeTime());
+        e.setInSystemTime(fromTime + byTime - e.bornTime);
+
+        e.setLastServeTime(fromTime + byTime);
+
+
+    }
+
+    void processEventBy(Event e, double byTime, double fromTime) {
+
+        if (e.getReactTime() < 0.0) {
+            e.setReactTime(fromTime - e.bornTime);
+        }
+
+        e.setWaitTime(e.getWaitTime() + fromTime - e.getLastServeTime());
+
+        e.completeBy(byTime);
+
+        e.setLastServeTime(fromTime + byTime);
     }
 
 

@@ -57,7 +57,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public List<Tags> findByUserId(long userId) throws SQLException {
+    public List<Tags> findByCreatorId(long userId) throws SQLException {
         return findBySelect(SQL_SELECT + " WHERE creatorId = ? ;", new Object[]{userId});
     }
 

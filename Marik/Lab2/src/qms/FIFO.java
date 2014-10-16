@@ -6,6 +6,7 @@ import relevance.Relevance;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * Created by andriybas on 10/2/14.
@@ -14,9 +15,9 @@ public class FIFO extends AbstractQMS {
 
     Deque<Event> eventQueue;
 
-    public FIFO(Generator inputGen, Generator serveGen, Relevance relevance, double[] k) {
-        super(inputGen, serveGen, relevance, k);
-        eventQueue = new ArrayDeque<>();
+    public FIFO(List<Event> inEvents, Relevance relevance, double[] k) {
+        super(inEvents, relevance, k);
+        eventQueue = new ArrayDeque<>(inEvents);
     }
 
     @Override
@@ -24,15 +25,7 @@ public class FIFO extends AbstractQMS {
 
         double time = 0;
 
-        while (hasMoreTasks() || !eventQueue.isEmpty()) {
-
-            if (eventQueue.isEmpty() && hasMoreTasks()) {
-                eventQueue.add(generateEvent(time));
-            }
-
-            if (eventQueue.isEmpty()) {
-                break;
-            }
+        while (!eventQueue.isEmpty()) {
 
             Event e = eventQueue.getFirst();
 
@@ -44,9 +37,9 @@ public class FIFO extends AbstractQMS {
 
                 double newTime = time + e.serveTime;
 
-                while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
-                    eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
-                }
+//                while (hasMoreTasks() && newTime > eventQueue.getLast().getLastServeTime()) {
+//                    eventQueue.addLast(generateEvent(eventQueue.getLast().bornTime));
+//                }
 
                 processEvent(e, newTime);
                 time = newTime;

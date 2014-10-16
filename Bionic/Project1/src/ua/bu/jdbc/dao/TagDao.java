@@ -12,7 +12,7 @@ public interface TagDao {
 
     public List<Tags>  findAll() throws SQLException;
 
-    public List<Tags>  findByUserId(long userId) throws SQLException;
+    public List<Tags> findByCreatorId(long userId) throws SQLException;
 
     public List<Tags>  findByName(String name) throws SQLException;
 

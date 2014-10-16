@@ -5,6 +5,7 @@ import generators.Generator;
 import relevance.Relevance;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Queue management system
@@ -14,50 +15,56 @@ import java.util.ArrayList;
  */
 public abstract class AbstractQMS {
 
-    final Generator inputGen;
-    final Generator serveGen;
-    final Relevance relevance;
+    public final Relevance relevance;
 
-    final double[] k;
+    public final double[] k;
 
-    final int N = 5;
-    int completedTasks = 0;
-    int generatedTasks = 0;
+    public final int N;
+    public int completedTasks = 0;
 
+    public final List<Event> inEvents;
 
-    final ArrayList<Event> inEvents;
+    public double totalReactTime;
+    public double totalInSystemTime;
+    public double totalServeTime;
+    public double totalWaitTime;
 
-    double totalReactTime;
-    double totalInSystemTime;
-    double totalServeTime;
-    double totalWaitTime;
+    public double deviationInSystem;
 
-    double deviationInSystem;
+    public double averageServeTime;
+    public double averageInSystemTime;
+    public double averageReactTime;
+    public double averageWaitTime;
 
-    double averageServeTime;
-    double averageInSystemTime;
-    double averageReactTime;
-    double averageWaitTime;
-
-    public AbstractQMS(Generator inputGen, Generator serveGen, Relevance relevance, double[] k) {
-        this.inputGen = inputGen;
-        this.serveGen = serveGen;
+    public AbstractQMS(List<Event> inEvents, Relevance relevance, double[] k) {
         this.relevance = relevance;
         this.k = k;
-        this.inEvents = new ArrayList<>(N);
+        this.inEvents = inEvents;
+        this.N = inEvents.size();
     }
 
     public abstract void run();
 
-    public Event generateEvent(double fromTime) {
-        generatedTasks++;
-        Event e = new Event(fromTime + inputGen.generate(), serveGen.generate());
-        inEvents.add(e);
-        return e;
-    }
+//    public Event generateEvent(double fromTime) {
+//        generatedTasks++;
+//        Event e = new Event(fromTime + inputGen.generate(), serveGen.generate());
+//        inEvents.add(e);
+//        return e;
+//    }
 
-    public boolean hasMoreTasks() {
-        return generatedTasks < N;
+//    public boolean hasMoreTasks() {
+//        return generatedTasks < N;
+//    }
+
+    public double calculateFunction() {
+        double res = 0.0;
+        res += k[0] * averageInSystemTime;
+        res += k[1] * deviationInSystem;
+        res += k[2] * averageReactTime;
+        res += k[3] * completedTasks / N;
+        // TODO : K[4] - last coefficient is not calculated
+
+        return res;
     }
 
     public void calculateValues() {
@@ -84,6 +91,10 @@ public abstract class AbstractQMS {
         }
 
         deviationInSystem /= N;
+    }
+
+    public List<Event> getInEvents() {
+        return inEvents;
     }
 
 }

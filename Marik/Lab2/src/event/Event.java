@@ -21,10 +21,7 @@ public class Event {
     public Event(double bornTime, double serveTime) {
         this.bornTime = bornTime;
         this.serveTime = serveTime;
-        this.partServedTime = 0.0;
-        this.lastServeTime = bornTime;
-        completedTime = -1.0;
-        reactTime = -1.0;
+        clear();
     }
 
     public boolean isCompleted() {
@@ -77,5 +74,14 @@ public class Event {
 
     public void setInSystemTime(double inSystemTime) {
         this.inSystemTime = inSystemTime;
+    }
+
+    public void clear() {
+        this.partServedTime = 0.0;
+        this.lastServeTime = bornTime;
+        completedTime = -1.0;
+        reactTime = -1.0;
+        inSystemTime = 0.0;
+        waitTime = 0.0;
     }
 }

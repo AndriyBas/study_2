@@ -27,7 +27,7 @@ public class TestDao {
 
             List<Tags> a1 = tagDao.findByName("Java");
             List<Tags> a2 = tagDao.findById(1);
-            List<Tags> a3 = tagDao.findByUserId(0);
+            List<Tags> a3 = tagDao.findByCreatorId(0);
 
             System.out.println("cool");
 
