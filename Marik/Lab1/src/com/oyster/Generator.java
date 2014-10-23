@@ -37,8 +37,6 @@ public class Generator {
     public double[] generate(int n) {
         double[] x = new double[n];
 
-
-
         for (int i = 0; i < n; i++) {
             double q = rand.nextDouble();
             int j = 0;

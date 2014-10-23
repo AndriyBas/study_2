@@ -33,26 +33,29 @@ public class HyperexponentialGenerator {
     }
 
     public void inputParameters() {
+
+        lambdas = new double[] {1.0, 5.0};
+        p =new double[] {0.3, 0.7};
+
         double sum = 0.0;
-        Scanner scan = new Scanner(System.in);
+//        Scanner scan = new Scanner(System.in);
 //        System.out.println("ВВедіть величину вибірки");
 //        numberOfElements = scan.nextInt();
 //        System.out.println("ВВедіть кількість генераторів");
 //        k = scan.nextInt();
-        System.out.println("ВВедіть інтенсивності потоків та ймовірності їх застосування");
+//        System.out.println("ВВедіть інтенсивності потоків та ймовірності їх застосування");
         probabilities [0] = 0.0;
         double temp = 0.0;
         for (int i = 0; i < k; i++) {
-            System.out.print(i + " генератор:\nінтенсивніть = ");
-            lambdas[i] = scan.nextDouble();
-            System.out.println("ймовірність роботи = ");
+//            System.out.print(i + " генератор:\nінтенсивніть = ");
+//            lambdas[i] = scan.nextDouble();
+//            System.out.println("ймовірність роботи = ");
             // в масив записуються інтервали, що відповідають ймовірностям роботи герераторів [0,1]
-            temp = scan.nextDouble();
-            p[i] = temp;
+            temp = p[i];
             sum += temp;
             probabilities[i+1] = sum;
         }
-        scan.close();
+//        scan.close();close
     }
 
     public List<Double> generate() {

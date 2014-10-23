@@ -8,9 +8,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Bionic</title>
 </head>
 <body>
-Hello ))
+
+<form action="/test" method="post">
+
+    Username : <input type="text" name="user">
+    <br>
+    Password : <input type="password" name="password">
+    <br>
+    <input type="submit" value="LogIn">
+</form>
+
 </body>
 </html>
