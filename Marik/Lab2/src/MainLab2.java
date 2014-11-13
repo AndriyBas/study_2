@@ -44,4 +44,7 @@ public class MainLab2 {
         ArrayDeque<Double> d = new ArrayDeque<>();
         System.out.println("");
     }
+
+//    public double avLenQueue(RR rr) {
+//    }
 }

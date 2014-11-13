@@ -113,7 +113,7 @@ public class RR extends AbstractQMS {
 
     }
 
-    void processEventBy(Event e, double byTime, double fromTime) {
+    public void processEventBy(Event e, double byTime, double fromTime) {
 
         if (e.getReactTime() < 0.0) {
             e.setReactTime(fromTime - e.bornTime);
