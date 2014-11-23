@@ -47,8 +47,8 @@ class Node(val name: String,
       waitQueue += task // add task to queue
     } else {
       workQueue += task
-      Simulator.acceptEvent(new Event(this, time + taskServeTime))
       updateLastSearchTime(time)
+      Simulator.acceptEvent(new Event(this, time + taskServeTime))
       takeResource()
     }
   }
@@ -66,15 +66,14 @@ class Node(val name: String,
   private def updateLastSearchTime(time: Int): Unit = {
 
     val numOfResBusy = resources - currentResources
-
-    coreLoad(numOfResBusy) += (time - lastServeTime)
+    val serveTime = (time - lastServeTime)
+    coreLoad(numOfResBusy) += serveTime
 
     lastServeTime = time
   }
 
   private def calculateStatisticOnFinishTask(time: Int) = {
-
-
+    // TODO : move it
     totalServeTasks += 1
 
   }
@@ -146,8 +145,9 @@ class Node(val name: String,
     println(name)
     println("Total serve tasks : " + totalServeTasks)
     for (i <- 1 to resources) {
-      println(i + " : " + (1.0 * coreLoad(i) / totalTime) + " % load")
+      println(i + " : " + (100.0 * coreLoad(i) / totalTime) + " % load (" + coreLoad(i) + ")")
     }
+    println("Tasks in queues : " + (workQueue.size + waitQueue.size))
     println("----------------------------------\n")
 
   }
@@ -157,39 +157,39 @@ class Node(val name: String,
 }
 
 
-class CP2 extends Node("CP", 2, 1)
+class CP2 extends Node("CP", 2, 10)
 
-// 0.25e-9
+// 0.25e-9 // 1400 - 2700 MHz
 
-class NorthBridge extends Node("NorthBridge", 1, 20)
+class NorthBridge extends Node("NorthBridge", 1, 15)
 
-// 5e-9
+// 5e-9 // (CPU-Frequency * 2 ) / 3.15 // MUL : 1.5
 
-class SouthBridge extends Node("SouthBridge", 1, 40)
+class SouthBridge extends Node("SouthBridge", 1, 30)
 
-// 10e-9
+// 10e-9 //
 
-class RAM extends Node("RAM", 1, 3)
+class RAM extends Node("RAM", 1, 12)
 
-// 0.75e-9
+// 0.75e-9 // 1600 MHz // MUL : 1.25
 
-class GPU extends Node("GPU", 1, 4)
+class GPU extends Node("GPU", 1, 17)
 
-// 1e-9
+// 1e-9 // 1200 MHz //
 
-class ISA extends Node("ISA", 1, 10)
+class ISA extends Node("ISA", 1, 125000)
 
-// ???
+// first - 8 - 16 MHz
 
-class LPT extends Node("LPT", 1, 200)
+class LPT extends Node("LPT", 1, 500000)
 
-// ???
+// 0.04 MHz - very very slow -->> 500 000
 
-class COM extends Node("COM", 1, 150)
+class COM extends Node("COM", 1, 200000)
 
-// ???
+// 0.1 MHz -- very slow -->> 200 000
 
-class KMD extends Node("KMD", 1, 75)
+class KMD extends Node("KMD", 1, 75000)
 
 // ???
 

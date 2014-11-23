@@ -18,9 +18,9 @@ object Simulator {
 
   var events = List.empty[Event]
 
-  val initialTaskCount = 3
+  val initialTaskCount = 5000
 
-  val simulationTime = 1000
+  val simulationTime = 1000000
 
   var currentTime = 0
 
@@ -50,13 +50,13 @@ object Simulator {
   def buildComputer() = {
 
     // cp
-    cp.addOut(new Out(cp, 0.5))
-    cp.addOut(new Out(nb, 0.5))
+    cp.addOut(new Out(cp, 0.8))
+    cp.addOut(new Out(nb, 0.2))
 
     // nb
-    nb.addOut(new Out(cp, 0.5))
-    nb.addOut(new Out(ram, 0.3))
-    nb.addOut(new Out(gpu, 0.15))
+    nb.addOut(new Out(cp, 0.3))
+    nb.addOut(new Out(ram, 0.4))
+    nb.addOut(new Out(gpu, 0.25))
     nb.addOut(new Out(sb, 0.05))
 
     // ram
@@ -76,7 +76,7 @@ object Simulator {
 
     // kmd
     kmd.addOut(new Out(sb, 0.5))
-    kmd.addOut(new Out(sb, 0.5)) // out of system - return to cp
+    kmd.addOut(new Out(cp, 0.5)) // out of system - return to cp
     // TODO : should kmd return to cp ??? ???
 
     // lpt
@@ -92,6 +92,7 @@ object Simulator {
     for (i <- 0 until initialTaskCount) {
       cp.accept(new Task(i), 0)
     }
+
   }
 
   def runSimulation() = {
@@ -130,7 +131,7 @@ object Runner {
   def main(args: Array[String]): Unit = {
 
     //    Simulator.testAcceptEvent()
-    Simulator.buildComputer
+    Simulator.buildComputer()
     Simulator.initialLoad()
     Simulator.runSimulation()
 
