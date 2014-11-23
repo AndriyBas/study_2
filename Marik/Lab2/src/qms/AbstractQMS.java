@@ -79,10 +79,10 @@ public abstract class AbstractQMS {
             }
         }
 
-        averageInSystemTime = totalInSystemTime / N;
-        averageReactTime = totalReactTime / N;
-        averageWaitTime = totalWaitTime / N;
-        averageServeTime = totalServeTime / N;
+        averageInSystemTime = totalInSystemTime / completedTasks;
+        averageReactTime = totalReactTime / completedTasks;
+        averageWaitTime = totalWaitTime / completedTasks;
+        averageServeTime = totalServeTime / completedTasks;
 
         deviationInSystem = 0;
 
@@ -90,7 +90,7 @@ public abstract class AbstractQMS {
             deviationInSystem += (averageInSystemTime - e.getInSystemTime()) * (averageInSystemTime - e.getInSystemTime());
         }
 
-        deviationInSystem /= N;
+        deviationInSystem /= (completedTasks - 1.0);
     }
 
     public List<Event> getInEvents() {

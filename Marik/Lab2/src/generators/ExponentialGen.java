@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class ExponentialGen implements Generator {
 
-    final double lambda;
+    public final double lambda;
 
     private final Random rand;
 

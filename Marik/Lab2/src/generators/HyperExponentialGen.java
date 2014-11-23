@@ -9,9 +9,9 @@ public class HyperExponentialGen implements Generator {
 
     private final Random rand;
 
-    final double[] p;
-    final double[] lambdas;
-    final int k;
+    public final double[] p;
+    public final double[] lambdas;
+    public final int k;
 
     private final double[] sumP;
 

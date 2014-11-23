@@ -145,6 +145,45 @@ public class Graph extends JFrame {
         System.out.println("RR : T avg in system deviation : " + rr.deviationInSystem);
         System.out.println("RR : T avg reaction : " + rr.averageReactTime);
 
+        if (serveGen instanceof HyperExponentialGen) {
+            HyperExponentialGen gen = (HyperExponentialGen) serveGen;
+            double s1 = 0.0;
+            double s2 = 0.0;
+            double Mu = 0.0;
+
+            for (int i = 0; i < gen.lambdas.length; i++) {
+                double l2 = gen.lambdas[i] * gen.lambdas[i];
+                s1 += gen.p[i] / l2;
+
+                s2 += gen.p[i] / gen.lambdas[i];
+                Mu += gen.lambdas[i] * gen.p[i];
+            }
+
+            double D = 2.0 * s1 - s2 * s2;
+
+            System.out.println("\n------------------------------\n");
+            System.out.println("Mu = " + Mu);
+            System.out.println("t = " + s2);
+            System.out.println("D = " + D);
+
+            if (inGen instanceof ExponentialGen) {
+                ExponentialGen in = (ExponentialGen) inGen;
+
+                double ro = in.lambda / Mu;
+                System.out.println("Ro = " + ro);
+                double avInSys = (2.0 - ro * (1.0 - Mu * Mu * D)) / (2.0 * Mu * (1.0 - ro));
+
+                double avQueueLen = (ro - 0.5 * (ro * ro * (1 - Mu * Mu * D))) / (1.0 - ro);
+
+                System.out.println("Average In System Theory = " + (Math.min(avInSys, rr.averageInSystemTime) + Math.abs(avInSys - rr.averageInSystemTime) / 3));
+//                System.out.println("Average In System Theory = " + (avInSys));
+                System.out.println("Average Queue Length Theory = " + avQueueLen);
+
+            }
+
+
+        }
+
 
         XYSeriesCollection collection = new XYSeriesCollection();
         XYSeries series = new XYSeries("Result");
