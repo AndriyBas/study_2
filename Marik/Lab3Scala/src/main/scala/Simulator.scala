@@ -50,14 +50,14 @@ object Simulator {
   def buildComputer() = {
 
     // cp
-    cp.addOut(new Out(cp, 0.8))
-    cp.addOut(new Out(nb, 0.2))
+    cp.addOut(new Out(cp, 0.6))
+    cp.addOut(new Out(nb, 0.4))
 
     // nb
     nb.addOut(new Out(cp, 0.3))
-    nb.addOut(new Out(ram, 0.4))
+    nb.addOut(new Out(ram, 0.35))
     nb.addOut(new Out(gpu, 0.25))
-    nb.addOut(new Out(sb, 0.05))
+    nb.addOut(new Out(sb, 0.1))
 
     // ram
     ram.addOut(new Out(nb, 1.0))
@@ -70,20 +70,20 @@ object Simulator {
     sb.addOut(new Out(isa, 0.7))
 
     // isa
+    isa.addOut(new Out(com, 0.25))
     isa.addOut(new Out(sb, 0.5))
     isa.addOut(new Out(lpt, 0.25))
-    isa.addOut(new Out(com, 0.25))
 
     // kmd
-    kmd.addOut(new Out(sb, 0.5))
-    kmd.addOut(new Out(cp, 0.5)) // out of system - return to cp
+    kmd.addOut(new Out(sb, 1.0))
+    //    kmd.addOut(new Out(cp, 0.5)) // out of system - return to cp
     // TODO : should kmd return to cp ??? ???
 
     // lpt
     lpt.addOut(new Out(cp, 1.0)) // out of system - return to cp
 
     // com
-    com.addOut(new Out(lpt, 0.5))
+    com.addOut(new Out(isa, 0.5))
     com.addOut(new Out(cp, 0.5)) // out of system - return to cp
   }
 

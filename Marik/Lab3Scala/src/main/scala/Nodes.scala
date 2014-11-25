@@ -88,21 +88,6 @@ class Node(val name: String,
 
     val p = loop(outPSum.toList, 0)
     p
-
-    //    def loop(ps: List[Double], pos: Int): Int = ps match {
-    //      case a0 :: Nil => pos
-    //      case a1 :: b1 :: ps1 => if (b1 < randP) pos else loop(b1 :: ps1, pos + 1)
-    //    }
-
-    //    loop(outPSum.toList, 0)
-
-    //    def getPos(pos: Int): Int =
-    //      if (pos == outPSum.size - 1)
-    //        pos
-    //      else {
-    //        if (outPSum(pos + 1) > randP) pos
-    //        else getPos(pos + 1)
-    //      }
   }
 
   def passTaskForward(task: Task, time: Int) = {
@@ -127,7 +112,6 @@ class Node(val name: String,
       freeResource()
 
       taskToGoForward += task
-      //      passTaskForward(task, time)
     }
 
     // start working with tasks in queue if any and has resources
@@ -153,11 +137,18 @@ class Node(val name: String,
   }
 
   override def toString = name + ", cr : " + currentResources + ", lst : " + lastServeTime;
-
 }
 
 
-class CP2 extends Node("CP", 2, 10)
+class CP1 extends Node("CP_1", 1, 10)
+
+// 0.25e-9 // 1400 - 2700 MHz
+
+class CP2 extends Node("CP_2", 2, 10)
+
+// 0.25e-9 // 1400 - 2700 MHz
+
+class CP3 extends Node("CP_3", 3, 10)
 
 // 0.25e-9 // 1400 - 2700 MHz
 
@@ -177,19 +168,19 @@ class GPU extends Node("GPU", 1, 17)
 
 // 1e-9 // 1200 MHz //
 
-class ISA extends Node("ISA", 1, 125000)
+class ISA extends Node("ISA", 1, 12500)
 
 // first - 8 - 16 MHz
 
-class LPT extends Node("LPT", 1, 500000)
+class LPT extends Node("LPT", 1, 50000)
 
 // 0.04 MHz - very very slow -->> 500 000
 
-class COM extends Node("COM", 1, 200000)
+class COM extends Node("COM", 1, 30000)
 
 // 0.1 MHz -- very slow -->> 200 000
 
-class KMD extends Node("KMD", 1, 75000)
+class KMD extends Node("KMD", 1, 7500)
 
 // ???
 

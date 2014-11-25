@@ -451,7 +451,7 @@ public class Lab6 {
     }
 
     private double getL(double p) {
-        return Math.sqrt((Math.sqrt(N * Math.pow(2, k - p)) - Math.pow(2, k - p)) / 2);
+        return Math.sqrt(k);//Math.sqrt((Math.sqrt(N * Math.pow(2, k - p)) - Math.pow(2, k - p)) / 2);
     }
 
     private double getCohrenTableValue(int f1, int f2) {
