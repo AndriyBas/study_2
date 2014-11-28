@@ -17,34 +17,45 @@ enum Signals {
 };
 
 enum States {
-    S2, S3, S4, S5, S6, S7, S8, S9, nStates
+    S0,S1, S2, S3, S4, S5, S6, S7, S8, S9, nStates
 };
 
 Signal charToSignal(char c);
-
+//b=(2*a +c/d)*2*a;;
 int main() {
-    Operator *op1;
-    op1 = new Dycrement(new Variable("n"));
-    op1 = new Process(op1);
-    Operator *op2;
-    op2 = new Braces(new Variable("a"), new Variable("n"));
-    op2 = new Binary(new Variable("b"), op2, "==");
-    op2 = new Binary(new Variable("n"), op2, "&&");
-    op2 = new Loop(op2);
-    std::cout << op1->show() + ";" + op2->show() + ";" << std::endl << std::endl;
-    delete op1;
-    delete op2;
+    Operator *o1 = new Binary(new Variable("2"), new Variable("a"), "*");
+    
+    Operator *o2 = new Binary(new Variable("c"), new Variable("d"), "/");
+    
+    Operator *o3 = new Binary(o1, o2, "+");
+    
+    Operator *o4 = new Braces(o3);
+    
+    Operator *o5 = new Binary(o4, new Variable("2"), "*");
+    
+    Operator *o6 = new Binary(o5, new Variable("a"), "*");
+    
+    Operator *o7 = new Binary(new Variable("b"), o6, "=");
+
+    Operator *o8 = new Cond(new Variable("c"), o7);
+    
+    std::cout << o8->show() + ";" << std::endl << std::endl;
+
+    delete o8;
     
     State transitionTableConst[nStates][nSignals] = {
         //  { DELIMETER, NUMBER, LETTER, SIGN },
-        { S2, S2, S7, S9 },
-        { S2, S3, S2, S2 },
-        { S8, S3, S3, S4 },
-        { S4, S4, S9, S4 },
-        { S5, S2, S9, S5 },
-        { S7, S5, S7, S7 },
-        { S6, S8, S6, S5 },
-        { S8, S9, S3, S2 }
+        { S2, S2, S7, S9 }, //0
+        { S2, S3, S2, S2 }, //1
+        { S8, S5, S3, S4 }, //2
+        { S7, S7, S9, S4 }, //3
+        { S5, S2, S9, S5 }, //4
+        { S7, S8, S7, S7 }, //5
+        { S6, S8, S6, S5 }, //6
+        { S8, S9, S5, S2 }, //7
+        { S6, S8, S6, S5 }, //8
+        { S8, S9, S3, S2 }  //9
+        
     };
     
     State **transitionTable = new State*[nStates];
@@ -52,7 +63,7 @@ int main() {
         transitionTable[i] = transitionTableConst[i];
     }
     
-    Machine machine(transitionTable, S2);
+    Machine machine(transitionTable, S3);
     
     std::string str;
     std::cout << "Input string: ";
@@ -63,7 +74,7 @@ int main() {
         State oldState = machine.getState();
         State newState = machine.step(signal);
         
-        std::cout << "Char: \"" << *i << "\"\tOld State: " << oldState+2 << "\tNew State: " << newState+2 << "\n";
+        std::cout << "Char: \"" << *i << "\"\tOld State: " << oldState << "\tNew State: " << newState << "\n";
     }
     
     std::cin.get();

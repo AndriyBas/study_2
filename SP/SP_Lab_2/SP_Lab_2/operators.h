@@ -11,11 +11,11 @@ public:
 
 class Braces : public Operator {
 public:
-    Braces(Operator *left, Operator *right);
+    Braces(Operator *opOp);
     ~Braces();
     std::string show() const;
 private:
-    Operator *left, *right;
+    Operator *opOp;
 };
 
 class Binary : public Operator {
@@ -28,13 +28,13 @@ private:
     std::string operatorSign;
 };
 
-class Loop : public Operator {
+class Cond : public Operator {
 public:
-    Loop(Operator *middle);
-    ~Loop();
+    Cond(Operator *middle, Operator *op);
+    ~Cond();
     std::string show() const;
 private:
-    Operator *middle;
+    Operator *middle, *op;
 };
 
 

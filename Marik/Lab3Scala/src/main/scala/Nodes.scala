@@ -168,19 +168,19 @@ class GPU extends Node("GPU", 1, 17)
 
 // 1e-9 // 1200 MHz //
 
-class ISA extends Node("ISA", 1, 12500)
+class ISA extends Node("ISA", 1, 410)
 
 // first - 8 - 16 MHz
 
-class LPT extends Node("LPT", 1, 50000)
+class LPT extends Node("LPT", 1, 1600)
 
 // 0.04 MHz - very very slow -->> 500 000
 
-class COM extends Node("COM", 1, 30000)
+class COM extends Node("COM", 1, 1000)
 
 // 0.1 MHz -- very slow -->> 200 000
 
-class KMD extends Node("KMD", 1, 7500)
+class KMD extends Node("KMD", 1, 250)
 
 // ???
 

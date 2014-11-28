@@ -1,19 +1,17 @@
 #include "operators.h"
 
 
-Braces::Braces(Operator *left, Operator *right)
-    : left(left)
-    , right(right)
+Braces::Braces(Operator *opOp)
+    : opOp(opOp)
 {
 }
 
 Braces::~Braces() {
-    delete left;
-    delete right;
+    delete opOp;
 }
 
 std::string Braces::show() const {
-    return left->show() + "[" + right->show() + "]";
+    return "(" + opOp->show() + ")";
 }
 
 Binary::Binary(Operator *left, Operator *right, std::string operatorSign)
@@ -32,17 +30,19 @@ std::string Binary::show() const {
     return left->show() + operatorSign + right->show();
 }
 
-Loop::Loop(Operator *middle)
-    : middle(middle)
+Cond::Cond(Operator *middle, Operator *op)
+    : middle(middle),
+    op(op)
 {
 }
 
-Loop::~Loop() {
+Cond::~Cond() {
     delete middle;
+    delete op;
 }
 
-std::string Loop::show() const {
-    return "while(" + middle->show() + ")";
+std::string Cond::show() const {
+    return "if (" + middle->show() + ") " + op->show();
 }
 
 Dycrement::Dycrement(Operator *right)
@@ -68,7 +68,7 @@ Process::~Process() {
 }
 
 std::string Process::show() const {
-    return "do" + right->show();
+    return right->show();
 }
 
 Variable::Variable(std::string name)
