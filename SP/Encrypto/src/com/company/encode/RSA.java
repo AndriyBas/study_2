@@ -1,69 +1,88 @@
 package com.company.encode;
 
-
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.security.Security;
-import java.security.spec.AlgorithmParameterSpec;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 
-public class AES {
+public class RSA {
 
     private final Cipher cipherEncrypt;
     private final Cipher cipherDecrypt;
 
-    private SecretKey secretKey;
-    private SecretKeySpec secretKeySpec;
+    private KeyPair keyPair;
 
-    public AES() throws Exception {
-
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-
-        secretKey = KeyGenerator.getInstance("AES").generateKey();
-
-        cipherEncrypt = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-
-        cipherDecrypt = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-
-        cipherEncrypt.init(Cipher.ENCRYPT_MODE, secretKey);
-
-        cipherDecrypt.init(Cipher.DECRYPT_MODE, secretKey);
-    }
-
-    public AES(String secretKeyHexString) throws Exception {
+    public RSA() throws Exception {
 
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
-        secretKeySpec = new SecretKeySpec(DatatypeConverter.parseHexBinary(secretKeyHexString), "AES");
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", "BC");
+        kpg.initialize(1024);
 
-//        final AlgorithmParameterSpec algParameters = new IvParameterSpec(initializationVector);
+        keyPair = kpg.genKeyPair();
 
-        cipherEncrypt = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+        cipherEncrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
 
-        cipherDecrypt = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+        cipherDecrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
 
-        cipherEncrypt.init(Cipher.ENCRYPT_MODE, secretKeySpec);
 
-        cipherDecrypt.init(Cipher.DECRYPT_MODE, secretKeySpec);
+        cipherEncrypt.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
+
+        cipherDecrypt.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
     }
 
-    public String getKeyHex() {
-        if (secretKey != null) {
-            return bytesToHex(secretKey.getEncoded());
-        } else {
-            return bytesToHex(secretKeySpec.getEncoded());
-        }
+    public RSA(String secretKeyHexString) throws Exception {
+
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(DatatypeConverter.parseHexBinary(secretKeyHexString));
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = kf.generatePrivate(keySpec);
+        
+//        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+//
+//        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+//
+//        SecretKeySpec secretKeySpec = new SecretKeySpec(DatatypeConverter.parseHexBinary(secretKeyHexString), "RSA");
+//        PrivateKey privateKey = keyFactory.generatePrivate(secretKeySpec);
+//
+
+
+        cipherEncrypt = null;
+
+        cipherDecrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+
+        cipherDecrypt.init(Cipher.DECRYPT_MODE, privateKey);
+    }
+
+//    public String getKeyHex(Key secretKey) {
+//        if (secretKey != null) {
+//            return bytesToHex(secretKey.getEncoded());
+//        } else {
+//            return bytesToHex(secretKeySpec.getEncoded());
+//        }
+//    }
+
+    public String getPublicKeyHex() {
+        return bytesToHex(keyPair.getPublic().getEncoded());
+    }
+
+    public String getPrivateKeyHex() {
+        return bytesToHex(keyPair.getPrivate().getEncoded());
     }
 
     public FileOutputStream encrypt(File file) throws IOException {
+
+        if (cipherEncrypt == null) {
+            throw new IllegalStateException("cipher is not initialized :((");
+        }
 
         FileInputStream is = new FileInputStream(file);
 
 //        File out = new File("temp.txt");
 
-        FileOutputStream os = new FileOutputStream("temp_en_aes_out.txt");
+        FileOutputStream os = new FileOutputStream("temp_en_rsa_out.txt");
 
         int dataSize = is.available();
 
@@ -102,7 +121,9 @@ public class AES {
 
         FileInputStream is = new FileInputStream(file);
 
-        FileOutputStream os = new FileOutputStream("temp_de_aes_out.txt");
+//        File out = new File("temp.txt");
+
+        FileOutputStream os = new FileOutputStream("temp_de_rsa_out.txt");
 
         int dataSize = is.available();
 
@@ -124,7 +145,6 @@ public class AES {
         os.close();
 
         return os;
-
 
     }
 

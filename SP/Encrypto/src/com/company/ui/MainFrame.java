@@ -2,6 +2,7 @@ package com.company.ui;
 
 import com.company.encode.AES;
 import com.company.encode.DES;
+import com.company.encode.RSA;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.io.FileReader;
  */
 public class MainFrame extends JFrame {
     private JPanel panelRoot;
-    private JTabbedPane tabbedPane2;
+    private JTabbedPane enRSAbuttonPick;
     private JTabbedPane tabbedPane3;
     private JTabbedPane tabbedPaneRoot;
     private JButton enDESbuttonPick;
@@ -35,12 +36,23 @@ public class MainFrame extends JFrame {
     private JButton decAESbuttonPick;
     private JTextField decAESPasswordText;
     private JButton decAESDecryptBtn;
+    private JLabel enRSAfileName;
+    private JTextField enRsaPasswordPublicText;
+    private JButton enRSASendBtn;
+    private JTextField enRsaPasswordPrivateText;
+    private JButton enRSA2buttonPick;
+    private JLabel decRSAfileName;
+    private JButton decRSAbuttonPick;
+    private JTextField decRSAPasswordText;
+    private JButton decRSADecryptBtn;
 
     File enDESChosenFile;
     File decDESChosenFile;
+    File decRSAChosenFile;
 
     File enAESChosenFile;
     File decAESChosenFile;
+    File enRSAChosenFile;
 
     public MainFrame() {
         super("Encrypto");
@@ -67,6 +79,7 @@ public class MainFrame extends JFrame {
 
         initDES();
         initAES();
+        initRSA();
 
     }
 
@@ -152,6 +165,7 @@ public class MainFrame extends JFrame {
 
                     } catch (Exception e1) {
                         e1.printStackTrace();
+                        decTextArea.append("invalid key\n");
                     }
                 }
         );
@@ -191,7 +205,7 @@ public class MainFrame extends JFrame {
 
             } catch (Exception e1) {
                 e1.printStackTrace();
-                decTextArea.append("invalid key");
+
             }
         });
 
@@ -236,11 +250,99 @@ public class MainFrame extends JFrame {
 
                     } catch (Exception e1) {
                         e1.printStackTrace();
-                        decTextArea.append("invalid key");
+                        decTextArea.append("invalid key\n");
                     }
                 }
         );
     }
+
+
+    private void initRSA() {
+        enRSA2buttonPick.addActionListener(e -> {
+
+            final JFileChooser fc = new JFileChooser();
+            fc.setAcceptAllFileFilterUsed(false);
+            fc.setCurrentDirectory(new File("."));
+
+            int returnVal = fc.showOpenDialog(MainFrame.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                enRSAChosenFile = fc.getSelectedFile();
+                enRSAfileName.setText(enRSAChosenFile.getName());
+            }
+        });
+
+        enRSASendBtn.addActionListener(e -> {
+            try {
+
+                if (enRSAChosenFile != null) {
+                    RSA rsa = new RSA();
+                    rsa.encrypt(enRSAChosenFile);
+
+                    enRsaPasswordPublicText.setText(rsa.getPublicKeyHex());
+                    enRsaPasswordPrivateText.setText(rsa.getPrivateKeyHex());
+
+                } else {
+                    //custom title, error icon
+                    JOptionPane.showMessageDialog(this,
+                            "Chose file",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+
+            }
+        });
+
+
+        decRSAbuttonPick.addActionListener(e -> {
+            final JFileChooser fc = new JFileChooser();
+            fc.setAcceptAllFileFilterUsed(false);
+            fc.setCurrentDirectory(new File("."));
+
+            int returnVal = fc.showOpenDialog(MainFrame.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                decRSAChosenFile = fc.getSelectedFile();
+                decRSAfileName.setText(decRSAChosenFile.getName());
+            }
+        });
+
+        decRSADecryptBtn.addActionListener(e -> {
+                    try {
+
+                        if (decRSAChosenFile != null) {
+                            String password = decRSAPasswordText.getText().trim();
+
+                            RSA rsaDec = new RSA(password);
+                            rsaDec.decrypt(new File("temp_en_rsa_out.txt"));
+
+                            decTextArea.removeAll();
+
+                            String everything = readFromFile("temp_de_rsa_out.txt");
+
+
+                            decTextArea.append(everything);
+
+
+                        } else {
+                            //custom title, error icon
+                            JOptionPane.showMessageDialog(this,
+                                    "Chose file",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                        decTextArea.append("invalid key\n");
+                    }
+                }
+        );
+    }
+
 
     private String readFromFile(String fileName) {
 

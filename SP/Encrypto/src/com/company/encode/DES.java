@@ -30,9 +30,9 @@ public class DES {
 
         final AlgorithmParameterSpec algParameters = new IvParameterSpec(initializationVector);
 
-        cipherEncrypt = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        cipherEncrypt = Cipher.getInstance("DES/CBC/PKCS5Padding", "BC");
 
-        cipherDecrypt = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        cipherDecrypt = Cipher.getInstance("DES/CBC/PKCS5Padding", "BC");
 
         cipherEncrypt.init(Cipher.ENCRYPT_MODE, secretKey, algParameters);
 
