@@ -13,13 +13,6 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 
-
-/**
- * @author meinside@gmail.com
- * @since 09.11.24.
- * <p>
- * last update 10.04.13.
- */
 final class StringCodec {
     /**
      * @param original
