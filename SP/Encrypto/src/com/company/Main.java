@@ -10,10 +10,8 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        // write your code here
 
-//        new Thread(new Receiver()).start();
-//        new Sender().send(new File("wow.txt"));
+        new Thread(new Receiver()).start();
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

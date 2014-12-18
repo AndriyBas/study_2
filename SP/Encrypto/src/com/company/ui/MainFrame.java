@@ -3,6 +3,7 @@ package com.company.ui;
 import com.company.encode.AES;
 import com.company.encode.DES;
 import com.company.encode.RSA;
+import com.company.transfer.Sender;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,6 +109,8 @@ public class MainFrame extends JFrame {
 //                    DES desDec = new DES(des.getKeyHex());
 //                    desDec.decrypt(new File("temp_en_des_out.txt"));
 
+                    new Sender().send(new File("temp_en_des_out.txt"));
+
                     enDesPasswordText.setText(des.getKeyHex());
 
                 } else {
@@ -195,6 +198,9 @@ public class MainFrame extends JFrame {
 
                     enAesPasswordText.setText(aes.getKeyHex());
 
+                    new Sender().send(new File("temp_en_aes_out.txt"));
+
+
                 } else {
                     //custom title, error icon
                     JOptionPane.showMessageDialog(this,
@@ -278,6 +284,9 @@ public class MainFrame extends JFrame {
                 if (enRSAChosenFile != null) {
                     RSA rsa = new RSA();
                     rsa.encrypt(enRSAChosenFile);
+
+                    new Sender().send(new File("temp_en_rsa_out.txt"));
+
 
                     enRsaPasswordPublicText.setText(rsa.getPublicKeyHex());
                     enRsaPasswordPrivateText.setText(rsa.getPrivateKeyHex());
