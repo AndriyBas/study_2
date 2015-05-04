@@ -46,7 +46,7 @@ public class Graph extends JFrame {
     private JPanel panelGraph4;
 
     public Graph() {
-        super("Hello, Marik ))");
+        super("Hello ))");
 
         add(rootPanel);
 
@@ -229,8 +229,6 @@ public class Graph extends JFrame {
         ChartPanel chartPanel3 = new ChartPanel((chart3));
         panelGraph4.removeAll();
         panelGraph4.add(chartPanel3);
-
-
 
 
         pack();

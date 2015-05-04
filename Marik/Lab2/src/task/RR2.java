@@ -85,7 +85,6 @@ public class RR2 implements Runnable {
             } else { // else add back to queue
                 addToQueue(currentTask);
             }
-
         }
 
         if(!taskQueue.isEmpty()) {
@@ -117,7 +116,4 @@ public class RR2 implements Runnable {
     public double getSystemTime() {
         return systemTime;
     }
-
-
-
 }
