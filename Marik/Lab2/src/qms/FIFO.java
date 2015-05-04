@@ -16,7 +16,7 @@ public class FIFO extends AbstractQMS {
     Deque<Event> eventQueue;
 
     public FIFO(List<Event> inEvents, Relevance relevance, double[] k) {
-        super(inEvents, relevance, k);
+        super(inEvents, relevance);
         eventQueue = new ArrayDeque<>(inEvents);
     }
 

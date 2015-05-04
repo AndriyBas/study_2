@@ -45,7 +45,7 @@ public class MainLab2 {
 //            System.out.println("wtf ???");
 //        }
 
-        java.util.List<Event> events = EventGenerator.generateEvents(inGen, serveGen, n);
+        java.util.List<Event> events = EventGenerator.generateEvents(inGen, serveGen, n, 32);
 
         FIFO fifo = new FIFO(events, relevance, k);
 
@@ -58,9 +58,9 @@ public class MainLab2 {
 
         List<Event> eventsCopy = new ArrayList<>(events.size());
         for (Event e : events) {
-            eventsCopy.add(new Event(e.bornTime, e.serveTime));
+            eventsCopy.add(new Event(e.bornTime, e.serveTime, e.priority));
         }
-        RR rr = new RR(eventsCopy, relevance, k);
+        RR rr = new RR(eventsCopy, relevance);
 
         rr.theta = 0.4;
 //        if (checkBoxTheta.isSelected()) {

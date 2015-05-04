@@ -7,6 +7,9 @@ public class Event {
 
     public final double bornTime;
     public final double serveTime;
+    public int priority;
+
+
 
     private double lastServeTime;
     private double partServedTime;
@@ -18,9 +21,10 @@ public class Event {
     private double waitTime;
     private double inSystemTime;
 
-    public Event(double bornTime, double serveTime) {
+    public Event(double bornTime, double serveTime, int priority) {
         this.bornTime = bornTime;
         this.serveTime = serveTime;
+        this.priority = priority;
         clear();
     }
 

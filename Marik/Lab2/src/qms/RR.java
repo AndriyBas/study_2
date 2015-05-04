@@ -17,38 +17,11 @@ public class RR extends AbstractQMS {
 
     public double theta = 0.2;
 
-    public RR(List<Event> inEvents, Relevance relevance, double[] k) {
-        super(inEvents, relevance, k);
+    public RR(List<Event> inEvents, Relevance relevance) {
+        super(inEvents, relevance);
         eventQueue = new ArrayList<>(inEvents);
         clearData();
 
-//        calculateTheta();
-    }
-
-    public void calculateTheta() {
-        theta = 0.001;
-        double dt = 0.01;
-        double maxTheta = 10.0;
-
-        double bestTheta = theta;
-        double maxFuncVal = Double.MIN_VALUE;
-
-        while (theta < maxTheta) {
-
-            run();
-
-            double funcVal = calculateFunction();
-            if (funcVal > maxFuncVal) {
-                maxFuncVal = funcVal;
-                bestTheta = theta;
-            }
-
-            theta += dt;
-
-            clearData();
-        }
-
-        theta = bestTheta;
     }
 
     private void clearData() {

@@ -1,10 +1,8 @@
 package qms;
 
 import event.Event;
-import generators.Generator;
 import relevance.Relevance;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,8 +14,6 @@ import java.util.List;
 public abstract class AbstractQMS {
 
     public final Relevance relevance;
-
-    public final double[] k;
 
     public final int N;
     public int completedTasks = 0;
@@ -36,9 +32,8 @@ public abstract class AbstractQMS {
     public double averageReactTime;
     public double averageWaitTime;
 
-    public AbstractQMS(List<Event> inEvents, Relevance relevance, double[] k) {
+    public AbstractQMS(List<Event> inEvents, Relevance relevance) {
         this.relevance = relevance;
-        this.k = k;
         this.inEvents = inEvents;
         this.N = inEvents.size();
     }
@@ -56,17 +51,16 @@ public abstract class AbstractQMS {
 //        return generatedTasks < N;
 //    }
 
-    public double calculateFunction() {
-        double res = 0.0;
-        res += k[0] * averageInSystemTime;
-        res += k[1] * deviationInSystem;
-        res += k[2] * averageReactTime;
-        res += k[3] * completedTasks / N;
-        // TODO : K[4] - last coefficient is not calculated
-
-        return res;
-    }
-
+    //    public double calculateFunction() {
+//        double res = 0.0;
+//        res += k[0] * averageInSystemTime;
+//        res += k[1] * deviationInSystem;
+//        res += k[2] * averageReactTime;
+//        res += k[3] * completedTasks / N;
+//         TODO: K[4] - last coefficient is not calculated
+//        return res;
+//    }
+//
     public void calculateValues() {
 
         totalInSystemTime = totalReactTime = totalServeTime = totalWaitTime = 0.0;

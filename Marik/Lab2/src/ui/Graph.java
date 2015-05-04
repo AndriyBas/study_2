@@ -1,39 +1,31 @@
 package ui;
 
-import event.*;
-import event.Event;
-import generators.*;
-//import org.jfree.chart.ChartFactory;
-//import org.jfree.chart.ChartPanel;
-//import org.jfree.chart.JFreeChart;
-//import org.jfree.chart.axis.NumberAxis;
-//import org.jfree.chart.plot.PiePlot3D;
-//import org.jfree.chart.plot.PlotOrientation;
-//import org.jfree.chart.plot.XYPlot;
-//import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-//import org.jfree.data.DataUtilities;
-//import org.jfree.data.function.LineFunction2D;
-//import org.jfree.data.general.DatasetUtilities;
-//import org.jfree.data.general.DefaultPieDataset;
-//import org.jfree.data.general.PieDataset;
-//import org.jfree.data.statistics.Regression;
-//import org.jfree.data.xy.DefaultXYDataset;
-//import org.jfree.data.xy.XYDataset;
-//import org.jfree.data.xy.XYSeries;
-//import org.jfree.data.xy.XYSeriesCollection;
-//import org.jfree.util.Rotation;
-import qms.FIFO;
-import qms.RR;
+import generators.ExponentialGen;
+import generators.Generator;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.function.LineFunction2D;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.statistics.Regression;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import relevance.ConstRelevance;
 import relevance.Relevance;
+import task.RR2;
+import task.Task;
+import task.TaskGenerator;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Arc2D;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,15 +38,12 @@ public class Graph extends JFrame {
     private JPanel panelGraph2;
     private JPanel panelGraph1;
     private JTextField textField1;
-    private JTextField textFieldMeow;
-    private JTextField textFieldLambda;
-    private JCheckBox checkBoxTheta;
     private JTextField textFieldTheta;
-    private JCheckBox checkBoxExpon;
-    private JCheckBox checkBoxBasVar;
-    private JTextField textFieldBasP1;
-    private JTextField textFieldBasM2;
-    private JTextField textFieldBasM1;
+    private JTextField textFieldMaxPriority;
+    private JTextField meowTF;
+    private JTextField lambdaTF;
+    private JPanel panelGraph3;
+    private JPanel panelGraph4;
 
     public Graph() {
         super("Hello, Marik ))");
@@ -85,9 +74,8 @@ public class Graph extends JFrame {
 
     private void runQMS() {
 
-        Generator inGen = new ExponentialGen(0.7);
-
-        Generator serveGen = new HyperExponentialGen(new double[]{0.7, 0.3}, new double[]{1.2, 2.0});
+//        Generator inGen = new ExponentialGen(0.7);
+//        Generator serveGen = new HyperExponentialGen(new double[]{0.7, 0.3}, new double[]{1.2, 2.0});
 //        Generator serveGen = new Regular(1.2);
 //        Generator serveGen = new ExponentialGen(1.2);
 
@@ -105,152 +93,59 @@ public class Graph extends JFrame {
 
         Relevance relevance = new ConstRelevance();
 
-        double[] k = new double[]{-5.0, -1.0, -1.0, 0.0, 0.0};
+        int n = 1000;
+        int maxPriority = 32;
+        double theta = 0.4;
 
-        int n = 5000;
+        double lambda = 0.9;
+        double meow = 1.0;
+
+
         try {
             n = Integer.parseInt(textField1.getText());
+            maxPriority = Integer.parseInt(textFieldMaxPriority.getText());
+            theta = Double.parseDouble(textFieldTheta.getText());
+            meow = Double.parseDouble(meowTF.getText());
+            lambda = Double.parseDouble(lambdaTF.getText());
         } catch (Exception e) {
             System.out.println("wtf ???");
         }
 
-        java.util.List<Event> events = EventGenerator.generateEvents(inGen, serveGen, n);
+        Generator inGen = new ExponentialGen(lambda);
+        Generator serveGen = new ExponentialGen(meow);
 
-        FIFO fifo = new FIFO(events, relevance, k);
+        List<Task> tasks = TaskGenerator.generateTasks(inGen, serveGen, n, maxPriority);
 
-        fifo.run();
-
-        System.out.println("FIFO : T avg in system : " + fifo.averageInSystemTime);
-        System.out.println("FIFO : T avg in system deviation : " + fifo.deviationInSystem);
-        System.out.println("FIFO : T avg reaction : " + fifo.averageReactTime);
-
-
-        List<Event> eventsCopy = new ArrayList<>(events.size());
-        for (Event e : events) {
-            eventsCopy.add(new Event(e.bornTime, e.serveTime));
-        }
-        RR rr = new RR(eventsCopy, relevance, k);
-
-        if (checkBoxTheta.isSelected()) {
-            rr.theta = Double.parseDouble(textFieldTheta.getText());
-        } else {
-            rr.calculateTheta();
-        }
-
-
+        RR2 rr = new RR2(tasks, theta);
         rr.run();
 
-        System.out.println("\ntheta : " + rr.theta);
-        System.out.println("RR : T avg in system : " + rr.averageInSystemTime);
-        System.out.println("RR : T avg in system deviation : " + rr.deviationInSystem);
-        System.out.println("RR : T avg reaction : " + rr.averageReactTime);
-
-        if (serveGen instanceof HyperExponentialGen) {
-            HyperExponentialGen gen = (HyperExponentialGen) serveGen;
-            double s1 = 0.0;
-            double s2 = 0.0;
-            double Mu = 0.0;
-
-            for (int i = 0; i < gen.lambdas.length; i++) {
-                double l2 = gen.lambdas[i] * gen.lambdas[i];
-                s1 += gen.p[i] / l2;
-
-                s2 += gen.p[i] / gen.lambdas[i];
-                Mu += gen.lambdas[i] * gen.p[i];
-            }
-
-            double D = 2.0 * s1 - s2 * s2;
-
-            System.out.println("\n------------------------------\n");
-            System.out.println("Mu = " + Mu);
-            System.out.println("t = " + s2);
-            System.out.println("D = " + D);
-
-            if (inGen instanceof ExponentialGen) {
-                ExponentialGen in = (ExponentialGen) inGen;
-
-                double ro = in.lambda / Mu;
-                System.out.println("Ro = " + ro);
-                double avInSys = (2.0 - ro * (1.0 - Mu * Mu * D)) / (2.0 * Mu * (1.0 - ro));
-
-                double avQueueLen = (ro - 0.5 * (ro * ro * (1 - Mu * Mu * D))) / (1.0 - ro);
-
-                System.out.println("Average In System Theory = " + (Math.min(avInSys, rr.averageInSystemTime) + Math.abs(avInSys - rr.averageInSystemTime) / 3));
-//                System.out.println("Average In System Theory = " + (avInSys));
-                System.out.println("Average Queue Length Theory = " + avQueueLen);
-
-            }
-
-
-        }
-
-
-//        XYSeriesCollection collection = new XYSeriesCollection();
-//        XYSeries series = new XYSeries("Result");
+//        double maxX = 10.0;
 //
-//        double maxX = 0.0;
-//        for (Event e : fifo.getInEvents()) {
-//            if (e.serveTime > maxX) {
-//                maxX = e.serveTime;
-//            }
-//            series.add(e.serveTime, e.getInSystemTime());
-//        }
+//        LineFunction2D linefunction2d__ = new LineFunction2D(0, 1);
+//        XYDataset regressionDataset__ = DatasetUtilities.sampleFunction2D(linefunction2d__, 0.0D, maxX, 100, "FIFO");
 //
-//        collection.addSeries(series);
-//        JFreeChart chart = ChartFactory.createScatterPlot(
-//                "FIFO", "t", "T", collection,
-//                PlotOrientation.VERTICAL, false, true, false);
-//
-//
-//        XYDataset data1 = new XYSeriesCollection(series);
-//
-//        NumberAxis numberaxis = new NumberAxis("t");
-//        numberaxis.setAutoRangeIncludesZero(false);
-//        NumberAxis numberaxis1 = new NumberAxis("T");
-//        numberaxis1.setAutoRangeIncludesZero(false);
-//        XYLineAndShapeRenderer xylineandshaperenderer = new XYLineAndShapeRenderer(false, true);
-//
-//        XYPlot xyplot = new XYPlot(data1, numberaxis, numberaxis1, xylineandshaperenderer);
-//
-//        double[] res = Regression.getOLSRegression(data1, 0);
-//        LineFunction2D linefunction2d = new LineFunction2D(res[0], res[1]);
-//        XYDataset regressionDataset = DatasetUtilities.sampleFunction2D(linefunction2d, 0.0D, maxX, 100, "FIFO");
-//
-//        JFreeChart regressionLineChart = ChartFactory.createScatterPlot(
-//                "FIFO", "t", "T", regressionDataset,
-//                PlotOrientation.VERTICAL, false, true, false);
-//
-//
-////        xyplot.setDataset(regressionDataset);
-//        XYLineAndShapeRenderer xylineandshaperenderer1 = new XYLineAndShapeRenderer(true, false);
-//        xylineandshaperenderer1.setSeriesPaint(0, Color.blue);
-//
-////        xyplot.setRenderer(xylineandshaperenderer1);
-//
-//        JFreeChart ch = ChartFactory.createXYLineChart("Regression line", "t", "T", regressionDataset, PlotOrientation.VERTICAL, true, false, false);
+//        JFreeChart ch = ChartFactory.createXYLineChart("Regression line", "t", "T", regressionDataset__, PlotOrientation.VERTICAL, true, false, false);
 //        ch.setBackgroundPaint(Color.white);
 //
 //        XYPlot plot2 = ch.getXYPlot();//new XYPlot(regressionDataset, numberaxis, numberaxis1, xylineandshaperenderer1);
 //
-//
 //        // FIXME : draw RR
-//        int count = (int) (maxX / rr.theta);
 //        double rrMaxX = 0.0;
-//        for (Event e : rr.getInEvents()) {
+//        for (Task e : rr.tasks) {
 //            if (e.serveTime > rrMaxX) {
 //                rrMaxX = e.serveTime;
 //            }
 //        }
 //        double x = 0;
 //        double nextX = rr.theta;
-//        int i = 1;
+//        int __i = 1;
 //
-//        while (x < maxX) {
+//        while (x < rrMaxX) {
 //
 //
 //            XYSeries rrSer = new XYSeries("res");
 //            int go = 0;
-//            for (Event e : rr.getInEvents()) {
+//            for (Task e : rr.tasks) {
 //                if (e.serveTime <= nextX && e.serveTime >= x) {
 //                    rrSer.add(e.serveTime, e.getInSystemTime());
 //                    go++;
@@ -266,37 +161,102 @@ public class Graph extends JFrame {
 //                double[] rrRes = Regression.getOLSRegression(rrDat, 0);
 //
 //                LineFunction2D rrLineFunc = new LineFunction2D(rrRes[0], rrRes[1]);
-//                XYDataset rrRegDataSet = DatasetUtilities.sampleFunction2D(rrLineFunc, x, nextX, 100, "RR " + i);
+//                XYDataset rrRegDataSet = DatasetUtilities.sampleFunction2D(rrLineFunc, x, nextX, 100, "RR " + __i);
 //
-//                plot2.setDataset(i, rrRegDataSet);
-//                plot2.setRenderer(i, rrLineRen);
+//                plot2.setDataset(__i, rrRegDataSet);
+//                plot2.setRenderer(__i, rrLineRen);
 //            }
 //
 //            x = nextX;
-//            i++;
+//            __i++;
 //            nextX += rr.theta;
 //        }
 //
-////        JFreeChart ch = ChartFactory.createXYLineChart("Func", "t", "T", regressionDataset, PlotOrientation.VERTICAL, true, false, false);
-//
-//
-//        JFreeChart jfreechart = new JFreeChart("Linear Regression", JFreeChart.DEFAULT_TITLE_FONT, plot2, true);
-//
-////        XYPlot plot = chart.getXYPlot();
-//
-////        plot.getRangeAxis().setRange(1.4, 1.51);
-////        plot.getDomainAxis().setStandardTickUnits(
-////                NumberAxis.createIntegerTickUnits());
-////        XYLineAndShapeRenderer renderer =
-////                (XYLineAndShapeRenderer) plot.getRenderer();
-////        renderer.setSeriesShapesVisible(0, true);
 //
 //        panelGraph1.removeAll();
 //        panelGraph1.add(new ChartPanel(ch));
-//
-//        pack();
+
+
+        // ------------------------// ------------------------// ------------------------// ------------------------
+
+        double[] avWait = new double[maxPriority + 1];
+        Arrays.fill(avWait, 0.0);
+        for (Task t : tasks) {
+            avWait[t.priority] += t.getWaitTime();
+        }
+        for (int i = 0; i < avWait.length; i++) {
+            avWait[i] /= 1.0 * n;
+        }
+
+        XYSeries ser1 = new XYSeries("Wait time (priority)");
+        for (int i = 1; i < avWait.length; i++) {
+            ser1.add(i, avWait[i]);
+        }
+
+        XYSeriesCollection dat1 = new XYSeriesCollection(ser1);
+        JFreeChart chart1 = ChartFactory.createXYLineChart("Wait time (priority)", "priority", "T wait", dat1, PlotOrientation.VERTICAL, true, true, false);
+        ChartPanel chartPanel1 = new ChartPanel((chart1));
+        panelGraph2.removeAll();
+        panelGraph2.add(chartPanel1);
+
+
+        XYSeries ser2 = new XYSeries("Wait time (lambda)");
+        XYSeries ser3 = new XYSeries("Idle % (lambda)");
+        for (double lam = 0.1; lam < 2.01; lam += 0.1) {
+
+            ExponentialGen inGen1 = new ExponentialGen(lam);
+            ExponentialGen serveGen1 = new ExponentialGen(meow);
+
+            List<Task> tasks1 = TaskGenerator.generateTasks(inGen1, serveGen1, n, maxPriority);
+
+            RR2 rr1 = new RR2(tasks1, theta);
+            rr1.run();
+
+            ser2.add(lam, avWait(tasks1));
+            double idleTime = (rr1.getSystemTime() - totalServeTime(tasks1)) / rr1.getSystemTime()  * 100;
+            ser3.add(lam, idleTime);
+        }
+
+        XYSeriesCollection dat2 = new XYSeriesCollection(ser2);
+        JFreeChart chart2 = ChartFactory.createXYLineChart("Wait time (lambda)", "lambda", "T wait", dat2, PlotOrientation.VERTICAL, true, true, false);
+        ChartPanel chartPanel2 = new ChartPanel((chart2));
+        panelGraph3.removeAll();
+        panelGraph3.add(chartPanel2);
+
+
+        XYSeriesCollection dat3 = new XYSeriesCollection(ser3);
+        JFreeChart chart3 = ChartFactory.createXYLineChart("Idle % (lambda)", "lambda", "Idle %", dat3, PlotOrientation.VERTICAL, true, true, false);
+        ChartPanel chartPanel3 = new ChartPanel((chart3));
+        panelGraph4.removeAll();
+        panelGraph4.add(chartPanel3);
+
+
+
+
+        pack();
 
         System.out.println("=======================================\n");
+    }
+
+    private void clear(List<Task> tasks) {
+        for(Task t: tasks)
+            t.clear();
+    }
+
+
+
+    private double totalServeTime(List<Task> tasksList) {
+        double w = 0.0;
+        for (Task t : tasksList)
+            w += t.serveTime;
+        return w;
+    }
+
+    private double avWait(List<Task> tasksList) {
+        double w = 0.0;
+        for (Task t : tasksList)
+            w += t.getWaitTime();
+        return w / tasksList.size();
     }
 
     private void addMenu() {
@@ -376,7 +336,6 @@ public class Graph extends JFrame {
 //        return chart;
 //
 //    }
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
