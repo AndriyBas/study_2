@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home_log_out"
+        app:showAsAction="ifRoom"
+        android:title="Log out" />
+
+    <item
+        android:id="@+id/home_print_statistic"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="Print Statistic" />
+
+    <item
+         android:id="@+id/home_register"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="Register New"/>
+
+</menu>
