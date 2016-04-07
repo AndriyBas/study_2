@@ -1,0 +1,134 @@
+<project name="ADCS_CP" default="signJAR" basedir=".">
+
+    <!-- ================== Application Properties =================== -->
+    <property name="app.name" value="Система логического моделирования"/>
+    <property name="app.version" value="1.0"/>
+    <property name="app.title" value="Система логического моделирования"/>
+    <property name="app.author" value="Захожий Игорь"/>
+    <property name="app.company" value="НТУУ КПИ, ФИВТ, гр. ИВ-73"/>
+
+    <property name="sourceDir" value="src"/>
+    <property name="outputDir" value="out/classes"/>
+    <property name="buildDir" value="out/build"/>
+    <property name="resourceDir" value="res"/>
+    <property name="libDir" value="lib"/>
+    <property name="imgDir" value="img"/>
+
+    <!-- ================== JAR Properties =================== -->
+    <property name="jar.oneJarClass" value="com.simontuffs.onejar.Boot"/>
+    <property name="jar.mainClass" value="zak.adcs.Program"/>
+    <property name="jar.name" value="adcs_cp.jar"/>
+    <property name="jar.keyStore" value="${basedir}/out/tempKey.store"/>
+    <property name="jar.keyPass" value="zak.dpcs"/>
+    <property name="jar.keyAlias" value="tempAlias"/>
+
+    <!--  ==================== Compilation Control Options ==================== -->
+    <property name="compile.debug" value="true"/>
+    <property name="compile.deprecation" value="false"/>
+    <property name="compile.optimize" value="true"/>
+    <path id="compile.classpath">
+        <fileset dir="${libDir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <available property="one-jar.dir" file="../one-jar/build.onejar.xml" value="../one-jar"/>
+	<property name="one-jar.dir" location="one-jar" />
+    <import file="${one-jar.dir}/build.onejar.xml"/>
+
+    <!-- ==================== Clean Target ================================== -->
+    <target name="clean"
+            description="Clean build dirs">
+        <delete dir="${buildDir}"/>
+        <delete dir="${outputDir}"/>
+    </target>
+
+    <!-- ==================== Prepare Target ================================== -->
+    <target name="prepare"
+            depends="clean"
+            description="Prepare build dirs">
+        <mkdir dir="${buildDir}"/>
+        <mkdir dir="${outputDir}"/>
+        <mkdir dir="${buildDir}/img"/>
+    </target>
+
+    <!-- ==================== Compile Target ================================== -->
+    <target name="compile"
+            depends="prepare"
+            description="Compile Java sources">
+
+        <javac srcdir="${sourceDir}"
+               destdir="${outputDir}"
+               debug="${compile.debug}"
+               deprecation="${compile.deprecation}"
+               optimize="${compile.optimize}"
+               target="1.5"
+               source="1.5">
+            <classpath refid="compile.classpath"/>
+        </javac>
+
+        <copy todir="${outputDir}">
+            <fileset dir="${sourceDir}" excludes="**/*.java"/>
+        </copy>
+        <copy todir="${buildDir}/img">
+            <fileset dir="${imgDir}" excludes="*.psd"/>
+        </copy>
+    </target>
+
+    <!-- ==================== Create JAR archive Target ================================== -->
+    <target name="createJAR"
+            depends="compile"
+            description="Create JAR archive">
+        <one-jar destfile="${buildDir}/${jar.name}">
+            <manifest>
+                <attribute name="Created-By" value="${app.author} - (${app.company})"/>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Main-Class" value="${jar.oneJarClass}"/>
+                <attribute name="One-Jar-Main-Class" value="${jar.mainClass}"/>
+                <section name="${app.name}">
+                    <attribute name="Specification-Title" value="${app.title}"/>
+                    <attribute name="Specification-Version" value="${app.version}"/>
+                    <attribute name="Specification-Vendor" value="${app.company}"/>
+                    <attribute name="Implementation-Title" value="${app.name}"/>
+                    <attribute name="Implementation-Version" value="${app.version}"/>
+                    <attribute name="Implementation-Vendor" value="${app.company}"/>
+                </section>
+            </manifest>
+            <main>
+                <fileset dir="${outputDir}" excludes="img/*.*"/>
+            </main>
+            <lib>
+                <fileset dir="${libDir}" includes="*.jar" />
+            </lib>
+            <resources>
+                <fileset dir="${buildDir}" includes="img/*.*"/>
+            </resources>
+		</one-jar>
+        <delete dir="${buildDir}/img"/>
+    </target>
+
+    <!-- ==================== Generate Key for JAR signing Target ================================== -->
+    <target name="generateKey"
+            description="Generates Key for JAR signing">
+        <delete failonerror="false" file="${jar.keyStore}"/>
+        <genkey keystore="${jar.keyStore}" alias="${jar.keyAlias}" storepass="${jar.keyPass}" validity="720"
+                keyalg="RSA">
+            <dname>
+                <param name="CN" value="${app.company}"/>
+                <param name="OU" value="${app.title}"/>
+                <param name="O" value="${app.company}"/>
+            </dname>
+        </genkey>
+    </target>
+
+    <!-- ==================== JAR Singing Target ================================== -->
+    <target name="signJAR"
+            depends="createJAR,generateKey"
+            description="Signing JAR archive">
+        <exec dir="${buildDir}" executable="jarsigner">
+            <arg line="-keystore ${jar.keyStore} -storepass ${jar.keyPass} ${jar.name} ${jar.keyAlias}"/>
+        </exec>
+        <delete file="${buildDir}/myKeystore"/>
+    </target>
+
+</project>

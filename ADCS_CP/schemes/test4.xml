@@ -1,0 +1,755 @@
+<schememodel>
+  <size>
+    <width>1600</width>
+    <height>1200</height>
+  </size>
+  <backgroundcolor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </backgroundcolor>
+  <standartcolor>
+    <red>0</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </standartcolor>
+  <selectedcolor>
+    <red>255</red>
+    <green>175</green>
+    <blue>175</blue>
+    <alpha>255</alpha>
+  </selectedcolor>
+  <textcolor>
+    <red>0</red>
+    <green>0</green>
+    <blue>0</blue>
+    <alpha>255</alpha>
+  </textcolor>
+  <font>
+    <attributes>
+      <entry>
+        <awt-text-attribute>width</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>size</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>weight</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>tracking</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>family</awt-text-attribute>
+        <string>Sans Serif</string>
+      </entry>
+      <entry>
+        <awt-text-attribute>superscript</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>posture</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>transform</awt-text-attribute>
+        <null/>
+      </entry>
+    </attributes>
+  </font>
+  <elements>
+    <zak.adcs.logicscheme.elements.InElement x="46" y="50" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>a</name>
+      <outName>1</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <zak.adcs.logicscheme.elements.InElement x="45" y="120" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>b</name>
+      <outName>1</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <zak.adcs.logicscheme.elements.InElement x="45" y="212" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>c</name>
+      <outName>3</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <zak.adcs.logicscheme.elements.InElement x="45" y="290" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>d</name>
+      <outName>2</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <zak.adcs.logicscheme.elements.InElement x="42" y="377" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>e</name>
+      <outName>2</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <zak.adcs.logicscheme.elements.InElement x="39" y="477" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>f</name>
+      <outName>4</outName>
+    </zak.adcs.logicscheme.elements.InElement>
+    <andelement x="189" y="65" width="50" height="60">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>1</name>
+      <inertiadelay>1</inertiadelay>
+      <dynamicdelay>1</dynamicdelay>
+      <incount>2</incount>
+      <innames>
+        <string>a</string>
+        <null/>
+      </innames>
+      <outnames>3</outnames>
+    </andelement>
+    <andelement x="187" y="305" width="50" height="60">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>2</name>
+      <inertiadelay>1</inertiadelay>
+      <dynamicdelay>1</dynamicdelay>
+      <incount>2</incount>
+      <innames>
+        <string>d</string>
+        <string>e</string>
+      </innames>
+      <outnames>4</outnames>
+    </andelement>
+    <connectionelement number="41">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>a</elementfrom>
+      <elementto>1</elementto>
+      <points>
+        <java.awt.Point>
+          <x>106</x>
+          <y>62</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>147</x>
+          <y>62</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>147</x>
+          <y>85</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>189</x>
+          <y>85</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="42">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>b</elementfrom>
+      <elementto>1</elementto>
+      <points>
+        <java.awt.Point>
+          <x>105</x>
+          <y>132</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>147</x>
+          <y>132</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>147</x>
+          <y>105</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>189</x>
+          <y>105</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="43">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>d</elementfrom>
+      <elementto>2</elementto>
+      <points>
+        <java.awt.Point>
+          <x>105</x>
+          <y>302</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>146</x>
+          <y>302</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>146</x>
+          <y>325</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>187</x>
+          <y>325</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="44">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>e</elementfrom>
+      <elementto>2</elementto>
+      <points>
+        <java.awt.Point>
+          <x>102</x>
+          <y>389</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>144</x>
+          <y>389</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>144</x>
+          <y>345</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>187</x>
+          <y>345</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <orelement x="300" y="146" width="50" height="60">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>3</name>
+      <inertiadelay>1</inertiadelay>
+      <dynamicdelay>2</dynamicdelay>
+      <incount>2</incount>
+      <innames>
+        <string>1</string>
+        <string>c</string>
+      </innames>
+      <outnames>5</outnames>
+    </orelement>
+    <orelement x="303" y="399" width="50" height="60">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>4</name>
+      <inertiadelay>1</inertiadelay>
+      <dynamicdelay>2</dynamicdelay>
+      <incount>2</incount>
+      <innames>
+        <string>2</string>
+        <string>f</string>
+      </innames>
+      <outnames>5</outnames>
+    </orelement>
+    <connectionelement number="45">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>f</elementfrom>
+      <elementto>4</elementto>
+      <points>
+        <java.awt.Point>
+          <x>99</x>
+          <y>489</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>201</x>
+          <y>489</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>201</x>
+          <y>439</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>303</x>
+          <y>439</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="46">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>2</elementfrom>
+      <elementto>4</elementto>
+      <points>
+        <java.awt.Point>
+          <x>237</x>
+          <y>335</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>270</x>
+          <y>335</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>270</x>
+          <y>419</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>303</x>
+          <y>419</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="47">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>c</elementfrom>
+      <elementto>3</elementto>
+      <points>
+        <java.awt.Point>
+          <x>105</x>
+          <y>224</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>202</x>
+          <y>224</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>202</x>
+          <y>186</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>300</x>
+          <y>186</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="48">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>1</elementfrom>
+      <elementto>3</elementto>
+      <points>
+        <java.awt.Point>
+          <x>239</x>
+          <y>95</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>269</x>
+          <y>95</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>269</x>
+          <y>166</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>300</x>
+          <y>166</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <andelement x="449" y="243" width="60" height="80">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>5</name>
+      <inertiadelay>1</inertiadelay>
+      <dynamicdelay>1</dynamicdelay>
+      <incount>3</incount>
+      <innames>
+        <string>5</string>
+        <string>3</string>
+        <string>4</string>
+      </innames>
+      <outnames>g</outnames>
+    </andelement>
+    <connectionelement number="49">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>3</elementfrom>
+      <elementto>5</elementto>
+      <points>
+        <java.awt.Point>
+          <x>350</x>
+          <y>176</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>399</x>
+          <y>176</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>399</x>
+          <y>283</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>449</x>
+          <y>283</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="50">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>4</elementfrom>
+      <elementto>5</elementto>
+      <points>
+        <java.awt.Point>
+          <x>353</x>
+          <y>429</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>401</x>
+          <y>429</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>401</x>
+          <y>303</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>449</x>
+          <y>303</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <zak.adcs.logicscheme.elements.OutElement x="583" y="115" width="60" height="25">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <textcolor reference="../../../textcolor"/>
+      <color reference="../../../standartcolor"/>
+      <font reference="../../../font"/>
+      <name>g</name>
+      <inName>5</inName>
+    </zak.adcs.logicscheme.elements.OutElement>
+    <connectionelement number="52">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>5</elementfrom>
+      <elementto>g</elementto>
+      <points>
+        <java.awt.Point>
+          <x>509</x>
+          <y>283</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>509</x>
+          <y>283</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>509</x>
+          <y>197</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>508</x>
+          <y>197</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>479</x>
+          <y>197</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>479</x>
+          <y>127</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>450</x>
+          <y>127</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>583</x>
+          <y>127</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <list/>
+        <null/>
+        <null/>
+        <list>
+          <int>53</int>
+        </list>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+    <connectionelement number="53">
+      <standartcolor reference="../../../standartcolor"/>
+      <selectedcolor reference="../../../selectedcolor"/>
+      <color reference="../../../standartcolor"/>
+      <elementfrom>5</elementfrom>
+      <elementto>5</elementto>
+      <points>
+        <java.awt.Point reference="../../../connectionelement[11]/points/java.awt.Point[7]"/>
+        <java.awt.Point>
+          <x>450</x>
+          <y>127</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>450</x>
+          <y>263</y>
+        </java.awt.Point>
+        <java.awt.Point>
+          <x>449</x>
+          <y>263</y>
+        </java.awt.Point>
+      </points>
+      <ispointtemporary>
+        <boolean>false</boolean>
+        <boolean>true</boolean>
+        <boolean>true</boolean>
+        <boolean>false</boolean>
+      </ispointtemporary>
+      <ispointselected>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </ispointselected>
+      <connectionelements>
+        <null/>
+        <null/>
+        <null/>
+        <null/>
+      </connectionelements>
+    </connectionelement>
+  </elements>
+</schememodel>
